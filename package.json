@@ -1,0 +1,22 @@
+{
+  "name": "humandancer",
+  "version": "1.0.0",
+  "description": "Are you human or are you dancer?",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ian-mackenzie/human-dancer.git"
+  },
+  "keywords": [
+    "Spotify"
+  ],
+  "author": "ian mackenzie",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ian-mackenzie/human-dancer/issues"
+  },
+  "homepage": "https://github.com/ian-mackenzie/human-dancer#readme"
+}
