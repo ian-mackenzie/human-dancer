@@ -31,7 +31,7 @@ app.get('/login', (req, res) => {
     let state = generateRandomString(16);
     res.cookie(stateKey, state);
 
-    let scope = 'user-read-private user-read-email user-library-read';
+    let scope = 'user-read-private user-read-email user-top-read user-library-read';
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
             response_type: 'code',
@@ -72,7 +72,7 @@ app.get('/callback', async (req, res) => {
             let body = await rp(authOptions);
             let access_token = body.access_token;
             let refresh_token = body.refresh_token;
-            let tracks = await getLikedTracks(access_token);
+            let tracks = await getTopTracks(access_token);
             let danceability = await getDanceability(tracks, access_token);
             res.redirect('/#' +
                     querystring.stringify({
@@ -112,6 +112,30 @@ let getLikedTracks = async (access_token) => {
     }
     return tracks;
 }
+
+let getTopTracks = async (access_token) => {
+    let tracks = [];
+    let keepgoing = true;
+    let options = {
+        method: 'GET',
+        url: 'https://api.spotify.com/v1/me/top/tracks?time_range=long_term&limit=50',
+        headers: { 'Authorization': 'Bearer ' + access_token },
+        json: true
+    };
+
+    while(keepgoing) {
+        let payload = await rp(options);
+        console.log(payload);
+        tracks = tracks.concat(payload.items.map(track => track.id));
+        if (payload.next === null) {
+            keepgoing = false;
+        } else {
+            options.url = payload.next;
+        }
+    }
+    console.log(tracks.length);
+    return tracks;
+};
 
 let getDanceability = async (tracks, access_token) => {
     let danceabilities = [];
@@ -159,6 +183,7 @@ app.get('/refresh_token', async (req, res) => {
             }));
     }
 });
+
 
 console.log('listening on 8888');
 app.listen(8888);
