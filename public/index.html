@@ -9,7 +9,7 @@
       }
       body {
         height: 100%;
-        background-color: #1db954;
+        background-image: linear-gradient(to bottom right, #1db954, yellow);
         color: white;
         text-align: center;
       }
@@ -42,9 +42,15 @@
         border-radius: 500px;
         border: 2px solid white;
         padding: 20px;
+        -o-transition:.25s;
+        -ms-transition:.25s;
+        -moz-transition:.25s;
+        -webkit-transition:.25s;
+        /* ...and now for the proper property */
+        transition:.25s;
       }
       .btn-white-outline:hover {
-        background-color: #1ed760;
+        background-color: rgba(29,185,84,.2);
         color: white;
       }
       .btn-white-outline:visited{
@@ -67,7 +73,8 @@
     </div>
     
     <script id="human-dancer-template" type="text/x-handlebars-template">
-      <h1>You Are {{danceability}}!</h1>
+      <h1>You Are {{humanDancer}}!</h1>
+      <h2>Your liked music has a {{danceability}}% danceability score</h2>
     </script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
@@ -98,6 +105,7 @@
         var access_token = params.access_token,
             refresh_token = params.refresh_token,
             danceability = params.danceability,
+            humanDancer = params.humanDancer,
             error = params.error;
 
         if (error) {
@@ -105,7 +113,8 @@
         } else {
           if (access_token) {
             humanDancerPlaceholder.innerHTML = humanDancerTemplate({
-              danceability: danceability
+              danceability: danceability,
+              humanDancer: humanDancer,
             });
 
             $('#login').hide();

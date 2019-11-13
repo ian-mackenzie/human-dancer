@@ -78,7 +78,8 @@ app.get('/callback', async (req, res) => {
                     querystring.stringify({
                         access_token: access_token,
                         refresh_token: refresh_token,
-                        danceability: danceability >= .5 ? "Dancer" : "Human"
+                        danceability: Number.parseFloat(danceability*100).toFixed(2),
+                        humanDancer: danceability >= .5 ? "Dancer" : "Human"
                     }));
         }
         catch(err) {
